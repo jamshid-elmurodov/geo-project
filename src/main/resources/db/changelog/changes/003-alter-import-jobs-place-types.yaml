@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-alter-import-jobs-place-types
+      author: geo-project
+      changes:
+        - dropColumn:
+            tableName: import_jobs
+            columnName: place_type
+
+        - addColumn:
+            tableName: import_jobs
+            columns:
+              - column:
+                  name: place_types
+                  type: JSONB
+                  defaultValue: '[]'
+                  constraints:
+                    nullable: false

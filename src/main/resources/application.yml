@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: geo-project
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/geoproject}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+server:
+  port: ${SERVER_PORT:8080}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    try-it-out-enabled: true
+  api-docs:
+    path: /v3/api-docs
+
+geo:
+  async:
+    core-pool-size: 4
+    max-pool-size: 8
+    queue-capacity: 100
+    thread-name-prefix: geo-async-
+
+  nominatim:
+    base-url: https://nominatim.openstreetmap.org
+    user-agent: GeoProject
+    rate-limit-ms: 1000
+
+  overpass:
+    base-url: https://overpass-api.de
+    timeout-seconds: 180
+    max-buffer-size-mb: 64

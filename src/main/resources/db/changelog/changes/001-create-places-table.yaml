@@ -1,0 +1,82 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-postgis-extension
+      author: geo-project
+      changes:
+        - sql:
+            sql: CREATE EXTENSION IF NOT EXISTS postgis;
+
+  - changeSet:
+      id: 001-create-places-table
+      author: geo-project
+      changes:
+        - createTable:
+            tableName: places
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: location
+                  type: GEOMETRY(Point, 4326)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: osm_id
+                  type: BIGINT
+                  constraints:
+                    unique: true
+              - column:
+                  name: address
+                  type: TEXT
+              - column:
+                  name: address_details
+                  type: JSONB
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted_at
+                  type: TIMESTAMP
+
+        - sql:
+            sql: CREATE INDEX idx_places_location ON places USING GIST (location);
+
+        - createIndex:
+            indexName: idx_places_type
+            tableName: places
+            columns:
+              - column:
+                  name: type
+
+        - createIndex:
+            indexName: idx_places_osm_id
+            tableName: places
+            columns:
+              - column:
+                  name: osm_id
