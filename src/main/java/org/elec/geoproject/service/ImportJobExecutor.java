@@ -32,8 +32,6 @@ public class ImportJobExecutor {
     log.info("Starting import job id={} city={} types={}", jobId, request.getCity(), request.getAmenities());
 
     ImportJob job = importJobRepository.findById(jobId).orElseThrow();
-    job.setStatus(ImportJobStatus.RUNNING);
-    importJobRepository.save(job);
 
     try {
       OverpassResponse response = overpassClient
