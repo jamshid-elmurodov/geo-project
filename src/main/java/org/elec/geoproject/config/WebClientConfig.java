@@ -29,7 +29,6 @@ public class WebClientConfig {
                 .clientConnector(new ReactorClientHttpConnector(httpClient));
     }
 
-    // JVM DNS ishlatib, faqat IPv4 qaytaradigan custom resolver
     private AddressResolverGroup<InetSocketAddress> ipv4OnlyResolver() {
         return new AddressResolverGroup<>() {
             @Override
